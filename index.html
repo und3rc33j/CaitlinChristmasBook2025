@@ -2,529 +2,540 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pagebright: Eyes Open</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Storybook</title>
 
   <!--
-    ======================================================
-    STORYBOOK TEMPLATE v1
-    ------------------------------------------------------
-    SAFE TO EDIT:
-    - THEME VARIABLES (colours / font)
-    - IMAGE PATHS
-    - pages[] CONTENT
+  ======================================================
+  STORYBOOK TEMPLATE v1
+  ------------------------------------------------------
+  SAFE TO EDIT:
+  - THEME VARIABLES (colours / font)
+  - IMAGE PATHS
+  - pages[] CONTENT
 
-    DO NOT EDIT:
-    - Layout CSS
-    - JavaScript behaviour
-    - HTML structure
-    ======================================================
+  DO NOT EDIT:
+  - Layout CSS
+  - JavaScript behaviour
+  - HTML structure
+  ======================================================
   -->
 
   <style>
-    :root{
-      /* THEME VARIABLES (safe to edit) */
-      --bg: #0b1020;
-      --card: rgba(255,255,255,.06);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --accent: #bfa7ff;
-      --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    /* ======================================================
+       THEME ZONE – EDIT PER BOOK
+       ====================================================== */
 
-      /* Layout tuning */
-      --maxw: 980px;
-      --pad: 20px;
-      --radius: 18px;
-      --shadow: 0 18px 55px rgba(0,0,0,.35);
+    :root{
+      /* Background */
+      --bg0:#120c0a;
+      --bg1:#1b130f;
+
+      /* Card */
+      --card: rgba(20,14,12,.88);
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 12px 40px rgba(0,0,0,.55);
+
+      /* Text */
+      --text:#fbf7f2;
+      --soft:#d5c6b6;
+
+      /* Shape + font */
+      --radius:18px;
+      --font: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* DO NOT EDIT: Layout CSS */
-    html,body{height:100%}
-    body{
+    /* ======================================================
+       ENGINE ZONE – DO NOT EDIT BELOW
+       ====================================================== */
+
+    html, body{
+      height:100%;
       margin:0;
-      font-family: var(--font);
-      background: radial-gradient(1200px 700px at 15% 15%, rgba(191,167,255,.18), transparent 60%),
-                  radial-gradient(900px 600px at 85% 20%, rgba(255,200,120,.10), transparent 55%),
-                  linear-gradient(180deg, #070a14, var(--bg));
-      color: var(--text);
+      overflow:hidden;
+      font-family:var(--font);
+      color:var(--text);
+    }
+
+    body{
+      background:
+        radial-gradient(900px 600px at 15% 20%, rgba(255,175,120,.18), transparent 60%),
+        radial-gradient(800px 520px at 85% 75%, rgba(255,210,140,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
       display:flex;
-      align-items:center;
       justify-content:center;
-      padding: 18px;
+      padding:14px;
       box-sizing:border-box;
     }
 
-    .app{
+    .card{
       width:100%;
-      max-width: var(--maxw);
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      max-width:920px;
+      height:100%;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
       overflow:hidden;
-      backdrop-filter: blur(10px);
+      position:relative;
     }
 
     header{
-      padding: 16px var(--pad);
+      padding:14px 16px;
+      border-bottom:1px solid var(--border);
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      gap: 12px;
+      align-items:center;
+      font-size:13px;
+      color:var(--soft);
+      background: rgba(0,0,0,.10);
     }
 
-    .title{
+    .body{
+      flex:1;
+      min-height:0;
       display:flex;
       flex-direction:column;
-      gap: 2px;
-      min-width: 0;
+      padding:14px 16px;
     }
-    .title h1{
-      margin:0;
-      font-size: 16px;
-      font-weight: 650;
-      letter-spacing: .2px;
-      white-space: nowrap;
+
+    .panel{
+      flex:1;
+      min-height:0;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
       overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .title .sub{
-      margin:0;
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-
-    .controls{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-shrink:0;
-    }
-
-    button{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-weight: 600;
-      font-size: 13px;
-      transition: transform .05s ease, background .15s ease, border-color .15s ease;
-    }
-    button:hover{ background: rgba(255,255,255,.09); }
-    button:active{ transform: translateY(1px); }
-    button:disabled{
-      opacity:.45;
-      cursor:not-allowed;
-    }
-
-    .progress{
-      font-size: 12px;
-      color: var(--muted);
-      padding: 0 10px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      height: 34px;
-      display:flex;
-      align-items:center;
-      gap: 8px;
       background: rgba(0,0,0,.18);
-    }
-
-    main{
-      padding: var(--pad);
       display:flex;
       flex-direction:column;
-      gap: 14px;
     }
 
-    /* Text block at top, centered across the page */
-    .page-text{
+    .text{
+      flex:0 0 auto;
+      padding:16px 16px 10px 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
       text-align:center;
-      line-height: 1.55;
-      font-size: 18px;
-      max-width: 860px;
-      margin: 0 auto;
-      white-space: pre-wrap;
-    }
-    .page-text .muted{
-      color: var(--muted);
-      font-size: 15px;
+      font-size:22px;
+      line-height:1.5;
+      letter-spacing:.2px;
     }
 
-    /* Image container: keep full image visible, do not crop */
-    .image-wrap{
+    .text h2{
+      margin:0;
+      font-size:26px;
+      line-height:1.2;
+    }
+
+    .text p{ margin:0; }
+
+        @media (max-width: 480px){
+  .text{
+    font-size:18px;
+    line-height:1.45;
+  }
+
+  .text h2{
+    font-size:22px;
+  }
+}
+
+    @media (max-width: 360px){
+  .text{
+    font-size:17px;
+    line-height:1.4;
+  }
+
+  .text h2{
+    font-size:20px;
+  }
+}
+
+
+    .imgWrap{
+      flex:1 1 auto;
+      min-height:0;
+      padding:12px 12px 14px 12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      display:none;
+    }
+
+    .frame{
       width:100%;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-      overflow:hidden;
+      height:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       display:flex;
       align-items:center;
       justify-content:center;
-
-      /* Important: control the max height so images aren’t huge on tall phones */
-      max-height: 62vh;
-      min-height: 240px;
+      overflow:hidden;
     }
-    .image-wrap img{
+
+    img.storyImg{
       width:100%;
       height:100%;
-      object-fit: contain; /* DO NOT CROP */
+      object-fit:contain;
+      object-position:center;
       display:block;
     }
 
-    .caption{
-      text-align:center;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: -6px;
+    footer{
+      display:flex;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-top:1px solid var(--border);
+      background: rgba(0,0,0,.08);
     }
 
-    .hint{
-      font-size: 12px;
-      color: rgba(255,255,255,.6);
-      text-align:center;
-      margin-top: 6px;
+    button{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.2);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:800;
+      font-size:14px;
+      cursor:pointer;
     }
+    button:disabled{ opacity:.4; cursor:not-allowed; }
 
-    @media (max-width: 540px){
-      .page-text{ font-size: 16px; }
-      .image-wrap{ min-height: 210px; }
+    .tapZone{
+      position:absolute;
+      left:0; right:0;
+      top:56px;
+      bottom:64px;
+      display:flex;
+      z-index:5;
     }
+    .tapHalf{ width:50%; }
   </style>
 </head>
 
 <body>
-  <div class="app" role="application" aria-label="storybook">
-    <header>
-      <div class="title">
-        <h1 id="bookTitle">Pagebright: Eyes Open</h1>
-        <p class="sub" id="pageTitle">Page 1</p>
-      </div>
+  <div class="card">
+    <div class="tapZone">
+      <div class="tapHalf" id="tapLeft"></div>
+      <div class="tapHalf" id="tapRight"></div>
+    </div>
 
-      <div class="controls">
-        <button id="prevBtn" type="button" aria-label="Previous page">Prev</button>
-        <div class="progress" aria-label="Progress">
-          <span id="progressText">1 / 1</span>
-        </div>
-        <button id="nextBtn" type="button" aria-label="Next page">Next</button>
-      </div>
+    <header>
+      <div id="pageLabel">Page 1</div>
+      <div>Tap sides to turn pages</div>
     </header>
 
-    <main>
-      <div id="pageText" class="page-text"></div>
+    <div class="body">
+      <div class="panel">
+        <div class="text" id="text"></div>
 
-      <div id="imageWrap" class="image-wrap" style="display:none;">
-        <img id="pageImg" alt="" />
+        <div class="imgWrap" id="imgWrap">
+          <div class="frame">
+            <img class="storyImg" id="img" alt="Illustration" />
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div id="caption" class="caption" style="display:none;"></div>
-      <div class="hint">Tip: You can replace placeholder images later. Keep filenames the same.</div>
-    </main>
+    <footer>
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
+    </footer>
   </div>
 
-  <script>
-    /* ===========================
-       pages[] CONTENT (safe to edit)
-       =========================== */
-
-    const pages = [
-      {
-        title: "Cover",
-        text: "Pagebright: Eyes Open\nA story about seeing clearly",
-        image: "images/cover_placeholder.png",
-        caption: "Cover art (replace later)"
-      },
-
-      {
-        title: "Page 2",
-        text:
-`Caitlin had a habit of noticing things.
-
-Not the sort of things that made people say “wow, you’re clever,” but the small, easily missed ones. The pause before someone answered a question. The way a laugh sounded a little too quick.
-
-She noticed when the world rushed past people, leaving them trying to keep up.`
-      },
-
-      {
-        title: "Page 3",
-        text:
-`She liked walking home because of that. Walking meant she could notice.
-
-The pavement outside the library was scattered with leaves, damp from an earlier shower. The building smelled faintly of old paper and rain, and Caitlin slowed as she passed.
-
-Something didn’t feel settled.`,
-        image: "images/p03_library_placeholder.png",
-        caption: "Civilian Caitlin near the library (portrait)"
-      },
-
-      {
-        title: "Page 4",
-        text:
-`A woman stood near the entrance, phone pressed to her ear.
-
-“I know I had them,” the woman said, checking the same pocket again and again. People stepped around her without looking twice.
-
-Caitlin didn’t rush over.
-
-She watched.`
-      },
-
-      {
-        title: "Page 5",
-        text:
-`The woman’s free hand never left her bag.
-
-“Excuse me,” Caitlin said gently. “Have you checked in there?”
-
-The woman blinked. Her keys sat right on top.
-
-“Oh,” she said, laughing as the tension faded. “Thank you.”`
-      },
-
-      {
-        title: "Page 6",
-        text:
-`Caitlin smiled and carried on walking.
-
-She didn’t see the figure watching from across the street. Old. Wrapped in a long coat. Eyes sharp and thoughtful.
-
-The figure nodded, as if a quiet decision had been made.`,
-        image: "images/p06_watcher_placeholder.png",
-        caption: "Mysterious watcher in the distance (landscape)"
-      },
-
-      {
-        title: "Page 7",
-        text:
-`That night, Caitlin found a small box waiting on her bed.
-
-No wrapping. No note.
-
-Inside lay a pendant, shaped like an owl’s eye, warm beneath her fingers, glowing softly as if it recognised her.`,
-        image: "images/p07_pendant_placeholder.png",
-        caption: "Pendant discovery (portrait)"
-      },
-
-      {
-        title: "Page 8",
-        text:
-`A fluttering sound filled the room.
-
-“Well,” said a small voice, “you took your time.”
-
-A tiny owl hovered in front of her, feathers shimmering gently.
-
-“I’m Ollu,” the owl said. “And yes, I’m real.”`
-      },
-
-      {
-        title: "Page 9",
-        text:
-`Ollu explained about the Miraculouses. About how they chose their holders.
-
-“The Owl Miraculous looks for perception,” Ollu said. “For patience. For people who see what others rush past.”
-
-“You don’t see more because you’re special,” Ollu added. “You’re special because you see.”`
-      },
-
-      {
-        title: "Page 10",
-        text:
-`The pendant was hers now.
-
-But there was a rule.
-
-“Keep it secret,” Ollu said. “Power draws attention. Attention draws trouble.”
-
-Caitlin nodded, the weight of it settling quietly in her chest.`
-      },
-
-      {
-        title: "Page 11",
-        text:
-`Trouble arrived sooner than she expected.
-
-The next afternoon, the town centre filled with noise. Paper flew through the air. Headlines shouted half-truths, twisting into a storm around a man at the centre.
-
-People ran.`,
-        image: "images/p11_akuma_placeholder.png",
-        caption: "Akumatised villain scene (landscape)"
-      },
-
-      {
-        title: "Page 12",
-        text:
-`Caitlin felt it before she understood it. A pressure. Like someone shouting without being heard.
-
-“That’s an akumatised villain,” Ollu said. “Fear and anger twisted into power.”
-
-Caitlin’s heart raced. “What do I do?”`
-      },
-
-      {
-        title: "Page 13",
-        text:
-`“You see,” Ollu replied.
-
-Caitlin touched the pendant.
-
-“Ollu,” she said, steadying herself, “eyes open!”
-
-Light wrapped around her as feathers of gold and violet spiralled into place.`,
-        image: "images/p13_transform_placeholder.png",
-        caption: "Transformation to Pagebright (portrait)"
-      },
-
-      {
-        title: "Page 14",
-        text:
-`Pagebright rushed forward.
-
-Nothing happened.
-
-The glowing pages she expected stayed blank. The storm grew louder.
-
-“You’re rushing,” Ollu said gently. “You’re trying to fix the noise, not understand it.”`
-      },
-
-      {
-        title: "Page 15",
-        text:
-`Pagebright stopped.
-
-She closed her eyes. Breathed. Let the noise exist without fighting it.
-
-When she opened her eyes again, the world changed.`
-      },
-
-      {
-        title: "Page 16",
-        text:
-`“Oh,” Pagebright whispered.
-
-She stepped closer, calm and quiet.
-
-“You’re not angry because you’re wrong,” she said. “You’re angry because no one listened.”
-
-The pages burst into light.`,
-        image: "images/p16_pages_placeholder.png",
-        caption: "Glowing pages reveal the real problem (portrait)"
-      },
-
-      {
-        title: "Page 17",
-        text:
-`The storm stilled.
-
-The villain’s power cracked and faded. The man sank to the ground, confused but calm, the weight finally lifted.
-
-The town grew quiet again.`
-      },
-
-      {
-        title: "Page 18",
-        text:
-`That evening, back in her room, Caitlin touched the pendant once more.
-
-“Eyes closed,” she said softly.
-
-The glow faded. Ollu yawned and settled onto her bookshelf.`,
-        image: "images/p18_bedroom_placeholder.png",
-        caption: "Calm bedroom scene (portrait)"
-      },
-
-      {
-        title: "Page 19",
-        text:
-`Caitlin lay back, staring at the ceiling.
-
-She hadn’t saved the day by being louder or stronger.
-
-She’d saved it by slowing down.
-
-By seeing.`
-      },
-
-      {
-        title: "Page 20",
-        text:
-`Somewhere, unseen, an old watcher smiled.
-
-The Owl Miraculous was exactly where it belonged.
-
-THE END`,
-        image: "images/p20_citywatch_placeholder.png",
-        caption: "Pagebright watching over the city (portrait preferred)"
+<script>
+ /* ======================================================
+   CONTENT ZONE – EDIT PER BOOK
+   ====================================================== */
+
+const IMG = {
+  cover:   "images/cover.png",
+  library: "images/scene-library.png",
+  watcher: "images/scene-watcher.png",
+  pendant: "images/scene-pendant.png",
+  akuma:   "images/scene-akuma.png",
+  transform:"images/scene-transform.png",
+  pages:   "images/scene-pages.png",
+  bedroom: "images/scene-bedroom.png",
+  city:    "images/scene-city.png"
+};
+
+const pages = [
+  {
+    title:true,
+    lines:[
+      "Pagebright: Eyes Open",
+      "A story about seeing clearly",
+      "Tap next to begin."
+    ],
+    img: IMG.cover
+  },
+
+  {
+    lines:[
+      "Caitlin had a habit of noticing things.",
+      "Not the sort of things that made people say “wow, you’re clever,” but the small, easily missed ones.",
+      "The pause before someone answered a question.",
+      "The way a laugh sounded a little too quick.",
+      "She noticed when the world rushed past people, leaving them trying to keep up."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "She liked walking home because of that. Walking meant she could notice.",
+      "The pavement outside the library was scattered with damp leaves.",
+      "The building smelled faintly of old paper and rain.",
+      "Something didn’t feel settled."
+    ],
+    img: IMG.library
+  },
+
+  {
+    lines:[
+      "A woman stood near the entrance, phone pressed to her ear.",
+      "“I know I had them,” she said, checking the same pocket again and again.",
+      "People stepped around her without looking twice.",
+      "Caitlin didn’t rush over.",
+      "She watched."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "The woman’s free hand never left her bag.",
+      "“Excuse me,” Caitlin said gently. “Have you checked in there?”",
+      "The woman blinked. Her keys sat right on top.",
+      "“Oh,” she laughed. “Thank you.”"
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "Caitlin smiled and carried on walking.",
+      "She didn’t see the figure watching from across the street.",
+      "Old. Wrapped in a long coat.",
+      "Eyes sharp and thoughtful.",
+      "The figure nodded, as if a quiet decision had been made."
+    ],
+    img: IMG.watcher
+  },
+
+  {
+    lines:[
+      "That night, Caitlin found a small box waiting on her bed.",
+      "No wrapping. No note.",
+      "Inside lay a pendant, shaped like an owl’s eye.",
+      "It was warm beneath her fingers, glowing softly."
+    ],
+    img: IMG.pendant
+  },
+
+  {
+    lines:[
+      "A fluttering sound filled the room.",
+      "“Well,” said a small voice, “you took your time.”",
+      "A tiny owl hovered in front of her.",
+      "“I’m Ollu,” the owl said. “And yes, I’m real.”"
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "Ollu explained about the Miraculouses.",
+      "About how they chose their holders.",
+      "“The Owl Miraculous looks for perception,” Ollu said.",
+      "“For patience. For people who see what others rush past.”",
+      "“You don’t see more because you’re special.”",
+      "“You’re special because you see.”"
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "The pendant was hers now.",
+      "But there was a rule.",
+      "“Keep it secret,” Ollu said.",
+      "“Power draws attention. Attention draws trouble.”",
+      "Caitlin nodded as the weight of it settled quietly in her chest."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "Trouble arrived sooner than she expected.",
+      "The next afternoon, the town centre filled with noise.",
+      "Paper flew through the air.",
+      "Headlines twisted into a storm around a man at the centre.",
+      "People ran."
+    ],
+    img: IMG.akuma
+  },
+
+  {
+    lines:[
+      "Caitlin felt it before she understood it.",
+      "A pressure. Like someone shouting without being heard.",
+      "“That’s an akumatised villain,” Ollu said.",
+      "“Fear and anger twisted into power.”",
+      "“What do I do?” Caitlin asked."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "“You see,” Ollu replied.",
+      "Caitlin touched the pendant.",
+      "“Ollu,” she said, steadying herself.",
+      "“Eyes open!”",
+      "Light wrapped around her as feathers of gold and violet spiralled into place."
+    ],
+    img: IMG.transform
+  },
+
+  {
+    lines:[
+      "Pagebright rushed forward.",
+      "Nothing happened.",
+      "The glowing pages she expected stayed blank.",
+      "The storm grew louder.",
+      "“You’re rushing,” Ollu said gently.",
+      "“You’re trying to fix the noise, not understand it.”"
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "Pagebright stopped.",
+      "She closed her eyes.",
+      "She breathed.",
+      "She let the noise exist without fighting it.",
+      "When she opened her eyes again, the world changed."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "“Oh,” Pagebright whispered.",
+      "She stepped closer, calm and quiet.",
+      "“You’re not angry because you’re wrong,” she said.",
+      "“You’re angry because no one listened.”",
+      "The pages burst into light."
+    ],
+    img: IMG.pages
+  },
+
+  {
+    lines:[
+      "The storm stilled.",
+      "The villain’s power cracked and faded.",
+      "The man sank to the ground, confused but calm.",
+      "The town grew quiet again."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "That evening, back in her room, Caitlin touched the pendant once more.",
+      "“Eyes closed,” she said softly.",
+      "The glow faded.",
+      "Ollu yawned and settled onto her bookshelf."
+    ],
+    img: IMG.bedroom
+  },
+
+  {
+    lines:[
+      "Caitlin lay back, staring at the ceiling.",
+      "She hadn’t saved the day by being louder or stronger.",
+      "She’d saved it by slowing down.",
+      "By seeing."
+    ],
+    img:null
+  },
+
+  {
+    lines:[
+      "Somewhere, unseen, an old watcher smiled.",
+      "The Owl Miraculous was exactly where it belonged.",
+      "THE END"
+    ],
+    img: IMG.city
+  }
+];
+
+
+  /* ======================================================
+     ENGINE ZONE – DO NOT EDIT BELOW
+     ====================================================== */
+
+  let idx = 0;
+  const textEl = document.getElementById("text");
+  const imgWrap = document.getElementById("imgWrap");
+  const imgEl = document.getElementById("img");
+  const pageLabel = document.getElementById("pageLabel");
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const tapLeft = document.getElementById("tapLeft");
+  const tapRight = document.getElementById("tapRight");
+
+  function render(){
+    const p = pages[idx];
+    textEl.innerHTML = "";
+
+    if (p.title){
+      const h = document.createElement("h2");
+      h.textContent = p.lines[0];
+      textEl.appendChild(h);
+      for (let i=1;i<p.lines.length;i++){
+        const d=document.createElement("p");
+        d.textContent=p.lines[i];
+        textEl.appendChild(d);
       }
-    ];
-
-    /* ===========================
-       DO NOT EDIT: Behaviour
-       =========================== */
-
-    const bookTitleEl = document.getElementById("bookTitle");
-    const pageTitleEl = document.getElementById("pageTitle");
-    const pageTextEl  = document.getElementById("pageText");
-    const imgWrapEl   = document.getElementById("imageWrap");
-    const imgEl       = document.getElementById("pageImg");
-    const captionEl   = document.getElementById("caption");
-    const progressEl  = document.getElementById("progressText");
-    const prevBtn     = document.getElementById("prevBtn");
-    const nextBtn     = document.getElementById("nextBtn");
-
-    let idx = 0;
-
-    function render(){
-      const p = pages[idx];
-
-      bookTitleEl.textContent = "Pagebright: Eyes Open";
-      pageTitleEl.textContent = p.title ?? `Page ${idx + 1}`;
-      pageTextEl.textContent  = p.text ?? "";
-
-      progressEl.textContent = `${idx + 1} / ${pages.length}`;
-
-      // Image handling
-      if (p.image){
-        imgEl.src = p.image;
-        imgEl.alt = p.caption ? p.caption : (p.title ?? `Page ${idx + 1} image`);
-        imgWrapEl.style.display = "flex";
-      } else {
-        imgEl.src = "";
-        imgEl.alt = "";
-        imgWrapEl.style.display = "none";
-      }
-
-      // Caption handling
-      if (p.caption){
-        captionEl.textContent = p.caption;
-        captionEl.style.display = "block";
-      } else {
-        captionEl.textContent = "";
-        captionEl.style.display = "none";
-      }
-
-      prevBtn.disabled = idx === 0;
-      nextBtn.disabled = idx === pages.length - 1;
+    } else {
+      p.lines.forEach(l=>{
+        const d=document.createElement("p");
+        d.textContent=l;
+        textEl.appendChild(d);
+      });
     }
 
-    prevBtn.addEventListener("click", () => { if (idx > 0) { idx--; render(); }});
-    nextBtn.addEventListener("click", () => { if (idx < pages.length - 1) { idx++; render(); }});
+    if (p.img){
+      imgWrap.style.display="block";
+      imgEl.src=p.img;
+    } else {
+      imgWrap.style.display="none";
+      imgEl.removeAttribute("src");
+    }
 
-    // Keyboard nav
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") prevBtn.click();
-      if (e.key === "ArrowRight") nextBtn.click();
-    });
+    pageLabel.textContent=`Page ${idx+1} of ${pages.length}`;
+    backBtn.disabled = idx===0;
+    nextBtn.disabled = idx===pages.length-1;
+  }
 
-    render();
-  </script>
+  function next(){ if(idx<pages.length-1){ idx++; render(); } }
+  function back(){ if(idx>0){ idx--; render(); } }
+
+  backBtn.onclick=back;
+  nextBtn.onclick=next;
+  tapLeft.onclick=back;
+  tapRight.onclick=next;
+
+  render();
+</script>
 </body>
 </html>
